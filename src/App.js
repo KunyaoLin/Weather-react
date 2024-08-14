@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import SearchBar from "./components/SearchBar";
+import CheckBox from "./components/CheckBox";
+import TempertureBtn from "./components/TempertureBtn";
+import WeatherCard from "./components/WeatherCard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex justify-center items-center w-custom-max h-custom-max fixed">
+      <div className="flex flex-col space-y-2 h-custom-80 w-custom-80 border justify-center items-center border-gray-200 mt-2">
+        <div className="font-semibold flex justify-center flex-col items-center mt-2">
+          <p className="text-xl text-gray-500"> Check the Weather Forcast</p>
+          <div> Input Content: </div>
+        </div>
+
+        <div className="flex flex-row justify-center items-center space-x-4">
+          {" "}
+          <SearchBar />
+          <CheckBox />
+        </div>
+        <div>
+          <TempertureBtn />
+        </div>
+        <WeatherCard />
+      </div>
     </div>
   );
 }
