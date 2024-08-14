@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useWeather } from "../WeatherContext";
-import { RxValue } from "react-icons/rx";
 
 const SearchBar = () => {
   const [value, setValue] = useState("");

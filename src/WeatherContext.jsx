@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 const initialState = {
   celsius: true,
-  farenheit: false,
   searchValue: "",
   loading: false,
-  location: [],
-  weather: [],
+  farenheit: false,
+  weather: {},
 };
 
 const weatherKey = process.env.REACT_APP_weatherKey;
@@ -19,11 +18,7 @@ function reducer(state, action) {
       return { ...state, searchValue: action.payload };
     case "loadingStatus":
       return { ...state, loading: action.payload };
-    case "locationInfo":
-      return {
-        ...state,
-        location: action.payload,
-      };
+
     case "weatherInfo":
       return {
         ...state,
@@ -34,27 +29,29 @@ function reducer(state, action) {
   }
 }
 function WeatherProvider({ children }) {
-  const [
-    { farenheit, celsius, searchValue, loading, location, weather },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [{ celsius, searchValue, loading, weather, farenheit }, dispatch] =
+    useReducer(reducer, initialState);
   useEffect(() => {
     if (!searchValue) return;
     let isCancelled = false;
     dispatch({ type: "loadingStatus", payload: true });
-    dispatch({ type: "weatherInfo", payload: [] });
+    dispatch({ type: "weatherInfo", payload: {} });
     async function getlocation(searchValue) {
       try {
+        console.log(searchValue);
         const response = await fetch(
-          `https://api.weatherapi.com/v1/current.json?key=${weatherKey}&q=${searchValue}&aqi=yes`
+          `https://api.weatherapi.com/v1/forecast.json?key=${weatherKey}&q=${searchValue}&days=3&aqi=yes&alerts=no`
         );
         console.log(response);
         if (!response.ok) {
           throw new Error("Getlocation error");
         }
-        // const locationData = await responeLocation.json();
-        if (!isCancelled && response.length > 0) {
-          console.log(response);
+        const weatherData = await response.json();
+        console.log(weatherData);
+        if (!isCancelled && weatherData) {
+          dispatch({ type: "weatherInfo", payload: weatherData });
+
+          console.log(weatherData);
         }
       } catch (error) {
         console.error(error.message);
@@ -71,7 +68,6 @@ function WeatherProvider({ children }) {
   }, [searchValue]);
   function handleTempType() {
     dispatch({ type: "tempType" });
-    console.log(celsius, farenheit);
   }
   function handleSearch(field) {
     console.log(field);
@@ -82,11 +78,10 @@ function WeatherProvider({ children }) {
     <WeatherContext.Provider
       value={{
         celsius,
-        farenheit,
         handleTempType,
         handleSearch,
         loading,
-        location,
+        farenheit,
         weather,
       }}
     >
