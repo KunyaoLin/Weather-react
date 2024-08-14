@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useWeather } from "../WeatherContext";
+import CheckBox from "./CheckBox";
 
 const SearchBar = () => {
   const [value, setValue] = useState("");
@@ -13,8 +14,9 @@ const SearchBar = () => {
     handleSearch(value);
     setValue("");
   }
+
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center space-x-4">
       <form onSubmit={handleOnSubmit}>
         <input
           onChange={(e) => setValue(e.target.value)}
@@ -23,6 +25,7 @@ const SearchBar = () => {
           placeholder="Search..."
         />
       </form>
+      <CheckBox handleOnSubmit={handleOnSubmit} />
     </div>
   );
 };

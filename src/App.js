@@ -15,7 +15,6 @@ function App() {
         <div className="flex flex-row justify-center items-center space-x-6">
           {" "}
           <SearchBar />
-          <CheckBox />
         </div>
         <div>
           <TempertureBtn />
